@@ -46,6 +46,7 @@ import com.gun0912.tedpermission.TedPermission;
 
 
 public class MainActivity extends AppCompatActivity {
+
     TabHost tabHost;
     TabHost.TabSpec ts1;
     TabHost.TabSpec ts2;
@@ -59,9 +60,31 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getImage();
-        tab1();
-        tab2();
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                //Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                getImage();
+                tab1();
+                tab2();
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [App Permissions]")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA)
+                .check();
+
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
@@ -80,34 +103,6 @@ public class MainActivity extends AppCompatActivity {
         ts3.setContent(R.id.content3);
         ts3.setIndicator("TAB 3");
         tabHost.addTab(ts3);
-
-        int permissonCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (permissonCheck == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), images.size()+"", Toast.LENGTH_LONG).show();
-        } else
-            Toast.makeText(getApplicationContext(), "없음", Toast.LENGTH_LONG).show();
-
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                //Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        };
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [App Permissions]")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA)
-                .check();
 
     }
 
@@ -186,7 +181,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String name = ((JSONObject) (jsonArray.get(i))).get("name").toString();
                 String phone = ((JSONObject) (jsonArray.get(i))).get("phone").toString();
-                listViewAdapter.addItem(name, phone);
+                String gender = ((JSONObject) (jsonArray.get(i))).get("gender").toString();
+                String email =((JSONObject) (jsonArray.get(i))).get("email").toString();
+                listViewAdapter.addItem(name, phone, gender, email);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

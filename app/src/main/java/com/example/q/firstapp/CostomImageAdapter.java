@@ -47,6 +47,7 @@ public class CostomImageAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.galleryitem, parent, false);
         }
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView1);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageURI(imageViewList.get(i));
       //  imageView.setImageResource(R.drawable.sample);
         return view;

@@ -8,20 +8,20 @@
 
     <TabHost
         android:id="@+id/tabHost"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
 
 
             android:orientation="vertical">
 
             <TabWidget
                 android:id="@android:id/tabs"
-                android:layout_width="395dp"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -38,30 +38,23 @@
                     android:id="@+id/gridview"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:columnWidth="90dip"
-                    android:numColumns="auto_fit"
-                    android:verticalSpacing="10dp"
-                    android:stretchMode="columnWidth"
+                    android:paddingTop="10dp"
+                    android:columnWidth="95dp"
                     android:gravity="center"
-                   >
+                    android:numColumns="auto_fit"
+                    android:orientation="vertical"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp">
 
                 </GridView>
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/content3"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#8BC34A"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="TAB CONTENT 3" />
+                </FrameLayout>
 
-                </LinearLayout>
 
             </FrameLayout>
         </LinearLayout>
