@@ -43,38 +43,30 @@ public class ListViewAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listview1_item, parent, false);
         }
-
-        ImageView imageView = (ImageView) view.findViewById(R.id.profile);
+        TextView imageView = (TextView) view.findViewById(R.id.profile);
         TextView nameView = (TextView) view.findViewById(R.id.textView1);
         TextView phoneView = (TextView) view.findViewById(R.id.textView2);
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         final ListViewItem listViewItem = listViewItemList.get(i);
-        if (listViewItem.getGender().equals("male")) {
-            imageView.setImageResource(R.drawable.man);
-        } else
-            imageView.setImageResource(R.drawable.woman);
+        imageView.setText(((listViewItem.getName()).charAt(0)+""));
         nameView.setText(listViewItem.getName());
         phoneView.setText(listViewItem.getPhone());
         view.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
             @Override
             public void onClick(View view) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 View layout = inflater.inflate(R.layout.detail_view, (ViewGroup) parent.findViewById(R.id.detail));
-                TextView name = (TextView)layout.findViewById(R.id.detailname);
+                TextView name = (TextView) layout.findViewById(R.id.detailname);
                 ImageView profile = (ImageView) layout.findViewById(R.id.profileview);
-                TextView phone = (TextView)layout.findViewById(R.id.phonenumber);
-                TextView email = (TextView)layout.findViewById(R.id.email);
+                TextView phone = (TextView) layout.findViewById(R.id.phonenumber);
+                TextView email = (TextView) layout.findViewById(R.id.email);
 
                 name.setText(listViewItem.getName());
-                if (listViewItem.getGender().equals("male")) {
-                    profile.setImageResource(R.drawable.man);
-                } else
-                    profile.setImageResource(R.drawable.woman);
+                profile.setImageResource(R.drawable.man);
                 phone.setText(listViewItem.getPhone());
                 email.setText(listViewItem.getEmail());
-
 
 
                 PopupWindow p = new PopupWindow(layout, 800, 1200, true);
@@ -85,12 +77,12 @@ public class ListViewAdapter extends BaseAdapter {
         return view;
     }
 
-    public void addItem(String name, String phone, String gender,String email) {
+    public void addItem(String name, String phone, String email) {
         ListViewItem item = new ListViewItem();
 
         item.setName(name);
         item.setPhone(phone);
-        item.setGender(gender);
+//        item.setGender(gender);
         item.setEmail(email);
 
         listViewItemList.add(item);

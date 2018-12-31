@@ -171,9 +171,7 @@ public class MainActivity extends AppCompatActivity {
         readSamples();
         ListView listView;
         ListViewAdapter listViewAdapter;
-
         listViewAdapter = new ListViewAdapter();
-
         listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(listViewAdapter);
 
@@ -183,13 +181,15 @@ public class MainActivity extends AppCompatActivity {
                 String phone = ((JSONObject) (jsonArray.get(i))).get("phone").toString();
                 String gender = ((JSONObject) (jsonArray.get(i))).get("gender").toString();
                 String email =((JSONObject) (jsonArray.get(i))).get("email").toString();
-                listViewAdapter.addItem(name, phone, gender, email);
+//                listViewAdapter.addItem(name, phone, gender, email);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
 
         }
+
+
     }
 
     public void tab2() {
@@ -201,15 +201,5 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < images.size(); i++) {
             imageAdapter.addItem(images.get(i));
         }
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-//        imageAdapter.addItem(null);
-
-
     }
 }
