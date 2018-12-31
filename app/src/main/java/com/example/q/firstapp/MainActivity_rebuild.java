@@ -1,6 +1,7 @@
 package com.example.q.firstapp;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentValues;
@@ -19,6 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -41,7 +44,7 @@ import java.util.Map;
 
 public class MainActivity_rebuild extends AppCompatActivity {
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    static ViewPager mViewPager;
     private ContentsPagerAdapter mContentsPagerAdapter;
     AssetManager assetManager;
     JSONArray jsonArray;
@@ -62,24 +65,25 @@ public class MainActivity_rebuild extends AppCompatActivity {
                 getImage();
                 getContents();
 //                readSamples();
-//                for (int i = 0; i < jsonArray.length(); i++) {
+//                for(int i = 0 ; i < jsonArray.length() ; i++) {
 //                    try {
 //                        setContents(
-//                                ((JSONObject) (jsonArray.get(i))).get("name").toString(),
-//                                ((JSONObject) (jsonArray.get(i))).get("phone").toString(),
-//                                ((JSONObject) (jsonArray.get(i))).get("email").toString());
+//                        ((JSONObject) (jsonArray.get(i))).get("name").toString(),
+//                        ((JSONObject) (jsonArray.get(i))).get("phone").toString(),
+//                        ((JSONObject) (jsonArray.get(i))).get("email").toString());
 //                    } catch (JSONException e) {
 //                        e.printStackTrace();
 //                    }
 //                }
-//               getContents();
+//               // setContents();
                 mContentsPagerAdapter = new ContentsPagerAdapter(
                         getSupportFragmentManager(), mTabLayout.getTabCount());
                 mContentsPagerAdapter.setImages(images);
+
                 mViewPager.setAdapter(mContentsPagerAdapter);
                 mViewPager.addOnPageChangeListener(
                         new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-            }
+                  }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {

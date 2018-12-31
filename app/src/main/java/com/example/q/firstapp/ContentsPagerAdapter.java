@@ -4,6 +4,10 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -15,8 +19,10 @@ public class ContentsPagerAdapter extends FragmentStatePagerAdapter {
     Tab3Fragment tab3Fragment;
     ArrayList<Uri> images;
 
+
     public ContentsPagerAdapter(FragmentManager fm, int index) {
         super(fm);
+
 
         pageIndex = index;
 
@@ -40,6 +46,8 @@ public class ContentsPagerAdapter extends FragmentStatePagerAdapter {
                     return new Tab3Fragment();
                 }
                 return tab3Fragment;
+
+
             default:
                 return null;
         }
@@ -48,6 +56,11 @@ public class ContentsPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return pageIndex;
+    }
+
+
+    public void onClick(){
+
     }
 
     public void setImages(ArrayList<Uri> images) {

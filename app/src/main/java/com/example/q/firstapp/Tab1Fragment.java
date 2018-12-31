@@ -1,40 +1,61 @@
 package com.example.q.firstapp;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 public class Tab1Fragment extends Fragment {
     AssetManager assetManager;
     JSONArray jsonArray;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
         tab1(view);
-        LinearLayout l = view.findViewById(R.id.tab1layout);
-        Button b = view.findViewById(R.id.button5);
+//        Button b = view.findViewById(R.id.newContents);
+//        b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//                View layout = inflater.inflate(R.layout.newcontentsview, (ViewGroup) container.findViewById(R.id.linearLayout));
+//                PopupWindow p = new PopupWindow(layout, 1100, 1450, true);
+//                p.setAnimationStyle(R.anim.popupanimation);
+//                p.showAtLocation(layout, Gravity.BOTTOM, 0, 0);
+//            }
+//        });
         return view;
     }
-
 
     public void tab1(View v) {
 //        readSamples();
@@ -43,7 +64,7 @@ public class Tab1Fragment extends Fragment {
         listViewAdapter = new ListViewAdapter();
         listView = (ListView) v.findViewById(R.id.tab1view);
         listView.setAdapter(listViewAdapter);
-        if(MainActivity_rebuild.contentsIds!=null) {
+        if (MainActivity_rebuild.contentsIds != null) {
             for (String id : MainActivity_rebuild.contentsIds) {
                 String name = MainActivity_rebuild.contents.get(id).get("name");
                 String phone = MainActivity_rebuild.contents.get(id).get("phone");
@@ -51,19 +72,8 @@ public class Tab1Fragment extends Fragment {
                 listViewAdapter.addItem(name, phone, email);
             }
         }
-       //        for (int i = 0; i < jsonArray.length(); i++) {
-//            try {
-//                String name = ((JSONObject) (jsonArray.get(i))).get("name").toString();
-//                String phone = ((JSONObject) (jsonArray.get(i))).get("phone").toString();
-//                String gender = ((JSONObject) (jsonArray.get(i))).get("gender").toString();
-//                String email = ((JSONObject) (jsonArray.get(i))).get("email").toString();
-//                listViewAdapter.addItem(name, phone, gender, email);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//        }
+
+
     }
 
     public void readSamples() {

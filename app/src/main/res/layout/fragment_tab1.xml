@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+
+    <Button
+        android:id="@+id/newContents"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="+"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_conversion_absoluteHeight="90dp"
+        tools:layout_conversion_absoluteWidth="90dp" />
+
     <ListView
         android:id="@+id/tab1view"
         android:layout_width="match_parent"
@@ -20,19 +35,5 @@
         tools:layout_conversion_absoluteWidth="187dp">
 
     </ListView>
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="+"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_conversion_absoluteHeight="90dp"
-        tools:layout_conversion_absoluteWidth="90dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -68,7 +68,6 @@ public class ListViewAdapter extends BaseAdapter {
                 phone.setText(listViewItem.getPhone());
                 email.setText(listViewItem.getEmail());
 
-
                 PopupWindow p = new PopupWindow(layout, 800, 1200, true);
                 p.setAnimationStyle(R.anim.popupanimation);
                 p.showAtLocation(layout, Gravity.CENTER, 0, 0);
