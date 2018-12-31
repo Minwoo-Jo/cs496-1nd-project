@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,20 +25,24 @@ import java.util.TimerTask;
 
 public class GraphicView extends View {
     int x, y;
-    int[] n = new int[20];
-    int[] speed = new int[20];
+    int[] n = new int[21];
+    int[] speed = new int[21];
     int width;
     int height;
     int left, center, right;
     int[] point = new int[3];
     int current;
-    int[] randomFence = {2, 5, 8, 11, 14};
+    int[] randomFence = new int[5];
     int[] randomIndex = {0, 1, 2, 2, 1};
     ArrayList<Rect> rects = new ArrayList<>();
     Timer t;
-
-    public GraphicView(Context context) {
+    Timer levelT;
+    Button startBtn;
+    int level = 1;
+    ArrayList<Timer> timers = new ArrayList<>();
+    public GraphicView(Context context, View view) {
         super(context);
+
         DisplayMetrics dn = context.getResources().getDisplayMetrics();
         width = dn.widthPixels;
         height = dn.heightPixels;
@@ -50,23 +55,70 @@ public class GraphicView extends View {
         point[0] = left;
         point[1] = center;
         point[2] = right;
+        defaultSet();
+        startBtn = (Button)view.findViewById(R.id.startbtn);
+        startBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startGame();
+                startBtn.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+
+    }
+    public void defaultSet(){
+        for(int i = 0 ; i < randomFence.length ; i++){
+            randomFence[i] = i*3+1;
+            randomIndex[i] = (int) (Math.random() * 3);
+        }
+
         for (int i = 0; i < n.length; i++) {
             speed[i] = i;
             n[i] = 60 * (i + 1);
         }
-        
-
     }
 
     public void startGame() {
+        timers = new ArrayList<>();
+        for(int i = 0 ; i < 8 ; i ++){
+            timers.add(new Timer());
+        }
+        ArrayList<TimerTask> tasks = new ArrayList<>();
+        Timer canceler = new Timer();
+        defaultSet();
         t = new Timer();
+        levelT = new Timer();
+
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 flow();
             }
         };
-        t.schedule(task, 0, 50);
+        for(int i = 0 ; i < 8 ; i ++){
+            timers.get(i).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    flow();
+                   }
+            },i*5000,100-i*5);
+        }
+
+        TimerTask cancelerTask = new TimerTask() {
+            int j = 0;
+            @Override
+            public void run() {
+                if(j<7) {
+                    timers.get(j).cancel();
+                    Log.d("test@", j+"");
+                    j++;
+                } else
+                    canceler.cancel();
+            }
+        };
+        canceler.schedule(cancelerTask,5000,5000);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -92,8 +144,11 @@ public class GraphicView extends View {
             }
             drawFence(canvas, randomIndex[i], randomFence[i], fencePaint);
             if (y + n[randomFence[i]] > y + 400 && y + n[randomFence[i]] < y + 440) {
+                Log.d("test@", "ee1");
                 if (current != randomIndex[i]) {
-                    t.cancel();
+                    Log.d("test@", "ee2");
+                    startBtn.setVisibility(VISIBLE);
+                    timers.forEach(x-> x.cancel());
                 }
             }
         }

@@ -22,16 +22,16 @@ public class Tab3Fragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_tab3,container,false);
 
 
-        GraphicView g = new GraphicView(view.getContext());
+        GraphicView g = new GraphicView(view.getContext(), view);
         LinearLayout l = (LinearLayout)view.findViewById(R.id.linearLayout3);
-        Button b = (Button)view.findViewById(R.id.startbtn);
-        b.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                g.startGame();
-                b.setVisibility(View.INVISIBLE);
-            }
-        });
+//        Button b = (Button)view.findViewById(R.id.startbtn);
+//        b.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                g.startGame();
+//                b.setVisibility(View.INVISIBLE);
+//            }
+//        });
 
 
 
