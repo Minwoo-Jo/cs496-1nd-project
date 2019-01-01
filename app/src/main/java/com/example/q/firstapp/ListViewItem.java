@@ -1,10 +1,15 @@
 package com.example.q.firstapp;
 
 public class ListViewItem {
+    private String id;
     private String name;
     private String phone;
     private String gender;
     private String email;
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -22,6 +27,10 @@ public class ListViewItem {
         this.email = email;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,5 +45,11 @@ public class ListViewItem {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean contains(CharSequence text) {
+        if(getName().contains(text)||getEmail().contains(text)||getPhone().contains(text))
+            return true;
+        return false;
     }
 }

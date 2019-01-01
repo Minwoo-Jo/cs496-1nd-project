@@ -1,13 +1,12 @@
 package com.example.q.firstapp;
 
 import android.Manifest;
-import android.app.FragmentTransaction;
+import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentValues;
-import android.content.Intent;
+import android.content.Context;
 import android.content.OperationApplicationException;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,12 +15,17 @@ import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -35,7 +39,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -51,6 +54,7 @@ public class MainActivity_rebuild extends AppCompatActivity {
     static ArrayList<Uri> images;
     static ArrayList<String> contentsIds;
     static HashMap<String, Map<String, String>> contents;
+    Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class MainActivity_rebuild extends AppCompatActivity {
 
                 getImage();
                 getContents();
+//                Log.d("test@", "read error");
 //                readSamples();
 //                for(int i = 0 ; i < jsonArray.length() ; i++) {
 //                    try {
@@ -75,7 +80,6 @@ public class MainActivity_rebuild extends AppCompatActivity {
 //                        e.printStackTrace();
 //                    }
 //                }
-//               // setContents();
                 mContentsPagerAdapter = new ContentsPagerAdapter(
                         getSupportFragmentManager(), mTabLayout.getTabCount());
                 mContentsPagerAdapter.setImages(images);
@@ -83,7 +87,7 @@ public class MainActivity_rebuild extends AppCompatActivity {
                 mViewPager.setAdapter(mContentsPagerAdapter);
                 mViewPager.addOnPageChangeListener(
                         new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-                  }
+            }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
@@ -103,7 +107,7 @@ public class MainActivity_rebuild extends AppCompatActivity {
                 .check();
 
         mTabLayout = (TabLayout) findViewById(R.id.layout_tab);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = findViewById(R.id.pager);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -118,6 +122,8 @@ public class MainActivity_rebuild extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+
     }
 
     public void getImage() {
@@ -175,19 +181,6 @@ public class MainActivity_rebuild extends AppCompatActivity {
         }
     }
 
-//    public void setContents() {
-//        ContentValues cv = new ContentValues();
-//        Log.d("test@", cv.keySet().toString());
-//        Log.d("test@", ContactsContract.Contacts._ID);
-//        cv.put( ContactsContract.Contacts._ID, "asdasd21");
-//        cv.put(ContactsContract.Contacts.DISPLAY_NAME, "민우");
-//        cv.put(ContactsContract.CommonDataKinds.Phone.NUMBER, "00123123123");
-//        cv.put(ContactsContract.CommonDataKinds.Email.DATA,"ASdasd");
-//
-//
-//       getContentResolver().insert(ContactsContract.Contacts.CONTENT_URI, cv);
-//
-//    }
 
     public void getContents() {
         HashMap<String, Map<String, String>> users = new HashMap<>(); // id, data
@@ -220,10 +213,11 @@ public class MainActivity_rebuild extends AppCompatActivity {
             users.put(cursor.getString(0), user);
         }
         cursor.close();
-
+        Log.d("test@", users.keySet().size() + " " + users.keySet().toString());
         contentsIds = (ArrayList) sortByValue(users);
-        contents = users;
 
+        Log.d("test@", "read error@@@");
+        contents = users;
 
     }
 
@@ -275,14 +269,18 @@ public class MainActivity_rebuild extends AppCompatActivity {
 
     public List sortByValue(final Map<String, Map<String, String>> map) {
         List<String> list = new ArrayList();
+        Log.d("test@", "sort1");
         list.addAll(map.keySet());
+        Log.d("test@", "sort2");
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
+
                 Object v1 = map.get(o1).get("name");
                 Object v2 = map.get(o2).get("name");
                 return ((Comparable) v2).compareTo(v1);
             }
         });
+        Log.d("test@", "sort3");
         Collections.reverse(list); // 주석시 오름차순
         return list;
     }

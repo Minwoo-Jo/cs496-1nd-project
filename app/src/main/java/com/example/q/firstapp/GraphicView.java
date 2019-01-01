@@ -22,30 +22,35 @@ import java.util.TimerTask;
 
 public class GraphicView extends View {
     int x, y;
-    int[] n = new int[21];
-    int[] speed = new int[21];
+    int[] n = new int[16];
+    int[] speed = new int[16];
+    ArrayList<Paint> ps = new ArrayList<>();
     int width;
     int height;
     int left, center, right;
     int[] point = new int[3];
     int current;
-    int[] randomFence = new int[5];
-    int[] randomIndex = {0, 1, 2, 2, 1};
+    int[] randomFence = new int[4];
+    int[] randomIndex = {1, 1, 1, 1};
+    ArrayList<Paint> fps = new ArrayList<>();
     int score = 0;
     int level = 1;
+    int playerY;
     ArrayList<Rect> rects = new ArrayList<>();
     Button startBtn;
     TextView scoreView;
     ArrayList<Timer> timers = new ArrayList<>();
     Timer canceler = new Timer();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public GraphicView(Context context, View view) {
         super(context);
         DisplayMetrics dn = context.getResources().getDisplayMetrics();
         width = dn.widthPixels;
         height = dn.heightPixels;
         x = width / 2 - 10;
-        y = height / 2;
+        y = height / 2 - 700;
+        playerY = y + 1100;
         left = width / 6;
         center = width / 2 - 20;
         right = (5 * width / 6) - 20;
@@ -56,6 +61,7 @@ public class GraphicView extends View {
         defaultSet();
         startBtn = (Button) view.findViewById(R.id.startbtn);
         startBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 startGame();
@@ -66,18 +72,25 @@ public class GraphicView extends View {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void defaultSet() {
         for (int i = 0; i < randomFence.length; i++) {
-            randomFence[i] = i * 3 + 1;
-            randomIndex[i] = (int) (Math.random() * 3);
+            randomFence[i] = i * 4;
+            randomIndex[i] = 1;
+            fps.add(new Paint());
         }
-
+        current = 1;
         for (int i = 0; i < n.length; i++) {
-            speed[i] = i;
-            n[i] = 60 * (i + 1);
+            speed[i] = i * 2 + 1;
+            n[i] = 80 * (i + 1);
+            ps.add(new Paint());
         }
+        ps.forEach(x -> x.setColor(Color.WHITE));
+        fps.forEach(x -> x.setColor(Color.DKGRAY));
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void startGame() {
         canceler.cancel();
         score = 0;
@@ -88,17 +101,15 @@ public class GraphicView extends View {
         for (int i = 0; i < 6; i++) {
             timers.add(new Timer());
         }
-       canceler = new Timer();
+        canceler = new Timer();
         defaultSet();
         for (int i = 0; i < 6; i++) {
             timers.get(i).schedule(new TimerTask() {
                 @Override
                 public void run() {
-
                     flow();
-
                 }
-            }, i * 4500+1, 80 - i * 7);
+            }, i * 4500, 80 - i * 9);
         }
         TimerTask cancelerTask = new TimerTask() {
             int j = 0;
@@ -109,8 +120,10 @@ public class GraphicView extends View {
                     timers.get(j).purge();
                     j++;
                     level++;
-                } else
-                    level++;
+                } else {
+                    level= level+3;
+                    canceler.cancel();
+                }
             }
         };
         canceler.schedule(cancelerTask, 4500, 4500);
@@ -120,31 +133,27 @@ public class GraphicView extends View {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(15f);
-        paint.setColor(Color.LTGRAY);
-        rects.clear();
         for (int i = 0; i < n.length; i++) {
-            rects.add(new Rect(x - 30 - n[i], y - 40 - n[i], x + 30 + n[i], y + n[i]));
-        }
-        Paint fencePaint = new Paint();
-        fencePaint.setColor(Color.DKGRAY);
-        fencePaint.setStrokeWidth(18f);
+            ps.get(i).setStrokeWidth(speed[i]);
 
-        rects.forEach(r -> canvas.drawRect(r, paint));
+        }
+        for (int i = 0; i < n.length; i++) {
+            canvas.drawLine(x - 50 - n[i] / 2, y - n[i], x - 50 - n[i] / 2, y + n[i], ps.get(i));
+            canvas.drawLine(x - 50 - n[i] / 2, y + n[i], x + 50 + n[i] / 2, y + n[i], ps.get(i));
+            canvas.drawLine(x + 50 + n[i] / 2, y - n[i], x + 50 + n[i] / 2, y + n[i], ps.get(i));
+        }
         for (int i = 0; i < randomFence.length; i++) {
-            if (y + n[randomFence[i]] > height - 100) {
-                randomIndex[i] = (int) (Math.random() * 3);
-            }
-            drawFence(canvas, randomIndex[i], randomFence[i], fencePaint);
-            if (y + n[randomFence[i]] > y + 400 && y + n[randomFence[i]] < y + 440) {
+            fps.get(i).setStrokeWidth(speed[randomFence[i] + 1]);
+            drawFence(canvas, randomIndex[i], randomFence[i], fps.get(i));
+            if (y + n[randomFence[i]] > playerY && y + n[randomFence[i]] < playerY + 40) {
                 Log.d("test@", "ee1");
                 if (current != randomIndex[i]) {
                     Log.d("test@", "ee2");
                     startBtn.setVisibility(VISIBLE);
-                    timers.forEach(x -> {x.cancel();
-                    x.purge();});
+                    timers.forEach(x -> {
+                        x.cancel();
+                        x.purge();
+                    });
                 }
             }
         }
@@ -152,28 +161,26 @@ public class GraphicView extends View {
         Paint playerPaint = new Paint();
         playerPaint.setColor(Color.BLACK);
         playerPaint.setStrokeWidth(20f);
-        canvas.drawCircle(point[current], y + 400, 40, playerPaint);
+        canvas.drawCircle(point[current], playerY, 40, playerPaint);
         scoreView.setText(score + "점");
 
     }
 
     public void drawFence(Canvas canvas, int index, int i, Paint paint) {
-//            Paint w = new Paint();
-//            w.setColor(Color.WHITE);
+        int length = 50;
+        int p0 = x - length - n[i] / 2;
+        int p3 = x + length + n[i] / 2;
+        int p1 = p0 * 2 / 3 + p3 / 3;
+        int p2 = (p1 + p3) / 2;
         if (index == 0) {
-//            canvas.drawLine(x-30-n[i], y + n[i],  (x-30-n[i])*2/3+(x+30 + n[i])/3, y + n[i], w);
-            canvas.drawLine((x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3, y + n[i], ((x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3 + x + 30 + n[i]) / 2, y + n[i], paint);
-            canvas.drawLine(((x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3 + x + 30 + n[i]) / 2, y + n[i], x + 30 + n[i], y + n[i], paint);
+            canvas.drawLine(p1, y + n[i], p3, y + n[i], paint);
         }
         if (index == 1) {
-            canvas.drawLine(x - 30 - n[i], y + n[i], (x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3, y + n[i], paint);
-//            canvas.drawLine((x-30-n[i])*2/3+(x+30 + n[i])/3, y + n[i],   ((x-30-n[i])*2/3+(x+30 + n[i])/3+x+30 + n[i])/2, y + n[i], w);
-            canvas.drawLine(((x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3 + x + 30 + n[i]) / 2, y + n[i], x + 30 + n[i], y + n[i], paint);
+            canvas.drawLine(p0, y + n[i], p1, y + n[i], paint);
+            canvas.drawLine(p2, y + n[i], p3, y + n[i], paint);
         }
         if (index == 2) {
-            canvas.drawLine(x - 30 - n[i], y + n[i], (x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3, y + n[i], paint);
-            canvas.drawLine((x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3, y + n[i], ((x - 30 - n[i]) * 2 / 3 + (x + 30 + n[i]) / 3 + x + 30 + n[i]) / 2, y + n[i], paint);
-//            canvas.drawLine(((x-30-n[i])*2/3+(x+30 + n[i])/3+x+30 + n[i])/2,y + n[i], x+30+n[i],y + n[i],w);
+            canvas.drawLine(p0, y + n[i], p2, y + n[i], paint);
         }
     }
 
@@ -192,22 +199,24 @@ public class GraphicView extends View {
             case MotionEvent.ACTION_UP:
                 invalidate();
         }
+
         return true;
     }
 
     public void flow() {
-
         for (int i = 0; i < n.length; i++) {
-            speed[i] = speed[i]+1;
+            speed[i] = speed[i] + 1;
             n[i] = n[i] + speed[i];
-            if (y - n[i] < 0) {
-                n[i] = 40;
+            if (y + n[i] > height - 300) {
+                n[i] = 50;
                 speed[i] = 0;
-
+            }
+        }
+        for (int i = 0; i < randomFence.length; i++) {
+            if (speed[randomFence[i]] == 0) {
+                randomIndex[i] = (int) (Math.random() * 3);
             }
         }
         invalidate();
     }
-
-
 }

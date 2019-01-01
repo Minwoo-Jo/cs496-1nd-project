@@ -10,9 +10,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
-
 public class Tab2Fragment extends Fragment{
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +21,6 @@ public class Tab2Fragment extends Fragment{
         tab2(view);
         return view;
     }
-
-
     public void tab2(View view) {
         ArrayList<Uri> images = MainActivity_rebuild.images;
         GridView gridView;

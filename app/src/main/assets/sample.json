@@ -11,36 +11,7 @@
 		"email": "paulinemiranda@envire.com",
 		"phone": "010-9094-8737"
 	},
-	{
-		"name": "Kris Benson",
-		"gender": "female",
-		"email": "krisbenson@envire.com",
-		"phone": "010-8694-2038"
-	},
-	{
-		"name": "Helene Gillespie",
-		"gender": "female",
-		"email": "helenegillespie@envire.com",
-		"phone": "010-9824-8527"
-	},
-	{
-		"name": "Gretchen Mcguire",
-		"gender": "female",
-		"email": "gretchenmcguire@envire.com",
-		"phone": "010-9245-2626"
-	},
-	{
-		"name": "Isabella Frost",
-		"gender": "female",
-		"email": "isabellafrost@envire.com",
-		"phone": "010-8955-9029"
-	},
-	{
-		"name": "Pratt Meyers",
-		"gender": "male",
-		"email": "prattmeyers@envire.com",
-		"phone": "010-8174-5637"
-	},
+
 	{
 		"name": "Antonia Schultz",
 		"gender": "female",
@@ -538,65 +509,5 @@
 		"gender": "male",
 		"email": "hopperrobles@envire.com",
 		"phone": "010-9325-9021"
-	},
-	{
-		"name": "Beulah Ramos",
-		"gender": "female",
-		"email": "beulahramos@envire.com",
-		"phone": "010-8824-5528"
-	},
-	{
-		"name": "Moreno Barr",
-		"gender": "male",
-		"email": "morenobarr@envire.com",
-		"phone": "010-8005-2834"
-	},
-	{
-		"name": "Rhonda Cline",
-		"gender": "female",
-		"email": "rhondacline@envire.com",
-		"phone": "010-9314-6925"
-	},
-	{
-		"name": "Kelly Mcintosh",
-		"gender": "female",
-		"email": "kellymcintosh@envire.com",
-		"phone": "010-8374-1020"
-	},
-	{
-		"name": "Kerr Campbell",
-		"gender": "male",
-		"email": "kerrcampbell@envire.com",
-		"phone": "010-9234-7537"
-	},
-	{
-		"name": "Lloyd Henry",
-		"gender": "male",
-		"email": "lloydhenry@envire.com",
-		"phone": "010-9785-6736"
-	},
-	{
-		"name": "Dixon Mathis",
-		"gender": "male",
-		"email": "dixonmathis@envire.com",
-		"phone": "010-9665-9827"
-	},
-	{
-		"name": "Lorna Romero",
-		"gender": "female",
-		"email": "lornaromero@envire.com",
-		"phone": "010-9924-5834"
-	},
-	{
-		"name": "Gertrude Kelley",
-		"gender": "female",
-		"email": "gertrudekelley@envire.com",
-		"phone": "010-8194-9635"
-	},
-	{
-		"name": "Ballard Hodge",
-		"gender": "male",
-		"email": "ballardhodge@envire.com",
-		"phone": "010-8244-6524"
 	}
 ]
